@@ -92,17 +92,13 @@ class Payments extends BaseService
      * @throws ApiException
      * @return Capture
      */
-    public function captureAuthorizedPayment($authorizationId, CaptureRequest $capture, string $payPalPartnerAttributionId = '', $payPalRequestId = '',$prefer = 'return=minimal'): Capture
+    public function captureAuthorizedPayment($authorizationId, CaptureRequest $capture, string $payPalPartnerAttributionId = '',$prefer = 'return=minimal'): Capture
     {
         $path = "/authorizations/{$authorizationId}/capture";
 
         $headers = [];
         $headers['Content-Type'] = 'application/json';
         $headers['Prefer'] = $prefer;
-
-        if ($payPalRequestId) {
-            $headers['PayPal-Request-Id'] = $payPalRequestId;
-        }
 
         if ($payPalPartnerAttributionId) {
             $headers['PayPal-Partner-Attribution-Id'] = $payPalPartnerAttributionId;
@@ -140,17 +136,13 @@ class Payments extends BaseService
      * @return Authorization
      *@throws ApiException
      */
-    public function reauthorizeAuthorizedPayment($authorizationId, ReauthorizeRequest $reauthorizeRequest, string $payPalPartnerAttributionId = '', $payPalRequestId = '',$prefer = 'return=minimal'): Authorization
+    public function reauthorizeAuthorizedPayment($authorizationId, ReauthorizeRequest $reauthorizeRequest, string $payPalPartnerAttributionId = '', $prefer = 'return=minimal'): Authorization
     {
         $path = "/authorizations/{$authorizationId}/reauthorize";
 
         $headers = [];
         $headers['Content-Type'] = 'application/json';
         $headers['Prefer'] = $prefer;
-
-        if ($payPalRequestId) {
-            $headers['PayPal-Request-Id'] = $payPalRequestId;
-        }
 
         if ($payPalPartnerAttributionId) {
             $headers['PayPal-Partner-Attribution-Id'] = $payPalPartnerAttributionId;
@@ -270,7 +262,7 @@ class Payments extends BaseService
      * @throws ApiException
      * @return Refund
      */
-    public function refundCapturedPayment($captureId, RefundRequest $refundRequest, $payPalAuthAssertion, string $payPalPartnerAttributionId = '', $payPalRequestId = '',$prefer = 'return=minimal'): Refund
+    public function refundCapturedPayment($captureId, RefundRequest $refundRequest, $payPalAuthAssertion, string $payPalPartnerAttributionId = '', $prefer = 'return=minimal'): Refund
     {
         $path = "/captures/{$captureId}/refund";
 
@@ -278,10 +270,6 @@ class Payments extends BaseService
         $headers['Content-Type'] = 'application/json';
         $headers['PayPal-Auth-Assertion'] = $payPalAuthAssertion;
         $headers['Prefer'] = $prefer;
-
-        if ($payPalRequestId) {
-            $headers['PayPal-Request-Id'] = $payPalRequestId;
-        }
 
         if ($payPalPartnerAttributionId) {
             $headers['PayPal-Partner-Attribution-Id'] = $payPalPartnerAttributionId;

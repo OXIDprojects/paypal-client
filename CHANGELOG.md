@@ -4,6 +4,14 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## [2.0.13] -2024-04-09
+
+- PayPal-Request-Id based on serialized body, no extra PayPal-Request-Id necessary anymore
+
+## [2.0.12] -2024-03-19
+
+- introduce central log functionality
+
 ## [2.0.11] -2024-03-15
 
 - remove 500-redirect if some API Calls not work correctly

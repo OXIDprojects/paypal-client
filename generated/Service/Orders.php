@@ -37,7 +37,7 @@ class Orders extends BaseService
      * @throws ApiException
      * @return Order
      */
-    public function createOrder(OrderRequest $order, $payPalPartnerAttributionId, $payPalClientMetadataId, $prefer = 'return=minimal', $payPalRequestId = ''): Order
+    public function createOrder(OrderRequest $order, $payPalPartnerAttributionId, $payPalClientMetadataId, $prefer = 'return=minimal'): Order
     {
         $path = "/orders";
 
@@ -46,10 +46,6 @@ class Orders extends BaseService
         $headers['PayPal-Partner-Attribution-Id'] = $payPalPartnerAttributionId;
         $headers['PayPal-Client-Metadata-Id'] = $payPalClientMetadataId;
         $headers['Prefer'] = $prefer;
-
-        if ($payPalRequestId) {
-            $headers['PayPal-Request-Id'] = $payPalRequestId;
-        }
 
         $body = json_encode($order, true);
         $response = $this->send('POST', $path, [], $headers, $body);
@@ -224,7 +220,7 @@ class Orders extends BaseService
      * @throws ApiException
      * @return Order
      */
-    public function authorizePaymentForOrder($payPalClientMetadataId, $id, OrderAuthorizeRequest $authorizeRequest, $payPalAuthAssertion, string $payPalPartnerAttributionId = '', $payPalRequestId = '' , $prefer = 'return=minimal'): Order
+    public function authorizePaymentForOrder($payPalClientMetadataId, $id, OrderAuthorizeRequest $authorizeRequest, $payPalAuthAssertion, string $payPalPartnerAttributionId = '', $prefer = 'return=minimal'): Order
     {
         $path = "/orders/{$id}/authorize";
 
@@ -233,10 +229,6 @@ class Orders extends BaseService
         $headers['Content-Type'] = 'application/json';
         $headers['PayPal-Auth-Assertion'] = $payPalAuthAssertion;
         $headers['Prefer'] = $prefer;
-
-        if ($payPalRequestId) {
-            $headers['PayPal-Request-Id'] = $payPalRequestId;
-        }
 
         if ($payPalPartnerAttributionId) {
             $headers['PayPal-Partner-Attribution-Id'] = $payPalPartnerAttributionId;
@@ -276,7 +268,7 @@ class Orders extends BaseService
      * @throws ApiException
      * @return Order
      */
-    public function capturePaymentForOrder($payPalClientMetadataId, $id, OrderCaptureRequest $orderCaptureRequest, $payPalAuthAssertion, string $payPalPartnerAttributionId = '', $payPalRequestId = '', $prefer = 'return=minimal'): Order
+    public function capturePaymentForOrder($payPalClientMetadataId, $id, OrderCaptureRequest $orderCaptureRequest, $payPalAuthAssertion, string $payPalPartnerAttributionId = '', $prefer = 'return=minimal'): Order
     {
         $path = "/orders/{$id}/capture";
 
@@ -285,10 +277,6 @@ class Orders extends BaseService
         $headers['Content-Type'] = 'application/json';
         $headers['PayPal-Auth-Assertion'] = $payPalAuthAssertion;
         $headers['Prefer'] = $prefer;
-
-        if ($payPalRequestId) {
-            $headers['PayPal-Request-Id'] = $payPalRequestId;
-        }
 
         if ($payPalPartnerAttributionId) {
             $headers['PayPal-Partner-Attribution-Id'] = $payPalPartnerAttributionId;
