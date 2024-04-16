@@ -37,7 +37,7 @@ class Orders extends BaseService
      * @throws ApiException
      * @return Order
      */
-    public function createOrder(OrderRequest $order, $payPalPartnerAttributionId, $payPalClientMetadataId, $prefer = 'return=minimal', $payPalRequestId = ''): Order
+    public function createOrder(OrderRequest $order, $payPalPartnerAttributionId, $payPalClientMetadataId, $prefer = 'return=minimal'): Order
     {
         $path = "/orders";
 
@@ -46,10 +46,6 @@ class Orders extends BaseService
         $headers['PayPal-Partner-Attribution-Id'] = $payPalPartnerAttributionId;
         $headers['PayPal-Client-Metadata-Id'] = $payPalClientMetadataId;
         $headers['Prefer'] = $prefer;
-
-        if ($payPalRequestId) {
-            $headers['PayPal-Request-Id'] = $payPalRequestId;
-        }
 
         $body = json_encode($order, true);
         $response = $this->send('POST', $path, [], $headers, $body);

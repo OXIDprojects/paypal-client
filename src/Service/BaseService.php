@@ -38,6 +38,11 @@ class BaseService
             $path = "$path?$q";
         }
         $fullPath = $this->basePath . $path;
+
+        if ($body) {
+            $headers['PayPal-Request-Id'] = md5(serialize($body));
+        }
+
         $request = $this->client->createRequest($method, $fullPath, $headers, $body);
         try {
             $response = $this->client->send($request);

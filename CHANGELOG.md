@@ -4,6 +4,10 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## [3.0.10] -2024-04-16
+
+- PayPal-Request-Id based on serialized body, no extra PayPal-Request-Id necessary anymore
+
 ## [3.0.9] - 2023-12-07
 
 - split Version for OXID7
