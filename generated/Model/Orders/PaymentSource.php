@@ -183,6 +183,13 @@ class PaymentSource implements JsonSerializable
      */
     public $apple_pay;
 
+    /**
+     * Information needed to pay using GooglePay.
+     *
+     * @var GooglePayRequest | null
+     */
+    public $google_pay;
+
     public function validate($from = null)
     {
         $within = isset($from) ? "within $from" : "";
@@ -533,5 +540,9 @@ class PaymentSource implements JsonSerializable
     public function initApplePay(): ApplePayRequest
     {
         return $this->apple_pay = new ApplePayRequest();
+    }
+    public function initGooglePay(): GooglePayRequest
+    {
+        return $this->google_pay = new GooglePayRequest();
     }
 }

@@ -182,6 +182,12 @@ class PaymentSourceResponse implements JsonSerializable
      * @var ApplePay | null
      */
     public $apple_pay;
+    /**
+     * Information needed to pay using ApplePay.
+     *
+     * @var ApplePay | null
+     */
+    public $google_pay;
 
     public function validate($from = null)
     {
@@ -330,6 +336,12 @@ class PaymentSourceResponse implements JsonSerializable
             "apple_pay in PaymentSourceResponse must be instance of ApplePay $within"
         );
         !isset($this->apple_pay) ||  $this->apple_pay->validate(PaymentSourceResponse::class);
+        !isset($this->google_pay) || Assert::isInstanceOf(
+            $this->google_pay,
+            GooglePay::class,
+            "google_pay in PaymentSourceResponse must be instance of GooglePay $within"
+        );
+        !isset($this->google_pay) ||  $this->google_pay->validate(PaymentSourceResponse::class);
     }
 
     private function map(array $data)
@@ -405,6 +417,9 @@ class PaymentSourceResponse implements JsonSerializable
         }
         if (isset($data['apple_pay'])) {
             $this->apple_pay = new ApplePay($data['apple_pay']);
+        }
+        if (isset($data['google_pay'])) {
+            $this->google_pay = new GooglePay($data['google_pay']);
         }
     }
 
@@ -533,5 +548,9 @@ class PaymentSourceResponse implements JsonSerializable
     public function initApplePay(): ApplePay
     {
         return $this->apple_pay = new ApplePay();
+    }
+    public function initGooglePay(): GooglePay
+    {
+        return $this->google_pay = new GooglePay();
     }
 }
