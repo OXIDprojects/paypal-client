@@ -4,6 +4,10 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## [2.0.14] -2024-04-26
+
+- introduce GooglePay-Classes
+
 ## [2.0.13] -2024-04-09
 
 - PayPal-Request-Id based on serialized body, no extra PayPal-Request-Id necessary anymore
