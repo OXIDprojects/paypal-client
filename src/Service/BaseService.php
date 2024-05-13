@@ -3,6 +3,8 @@
 namespace OxidSolutionCatalysts\PayPalApi\Service;
 
 use GuzzleHttp\Exception\GuzzleException;
+use OxidSolutionCatalysts\PayPal\Service\Logger;
+use OxidSolutionCatalysts\PayPal\Traits\ServiceContainer;
 use OxidSolutionCatalysts\PayPalApi\Client;
 use OxidSolutionCatalysts\PayPalApi\Exception\ApiException;
 use Psr\Http\Message\ResponseInterface;
@@ -10,6 +12,8 @@ use GuzzleHttp\Psr7\Query;
 
 class BaseService
 {
+    use ServiceContainer;
+
     /** @var Client */
     public $client;
 
@@ -32,6 +36,9 @@ class BaseService
      */
     protected function send($method, $path, $params = [], $headers = [], $body = null): ResponseInterface
     {
+        /** @var Logger $logger */
+        $logger = $this->getServiceFromContainer(Logger::class);
+
         $params = array_filter($params);
         if ($params) {
             $q = Query::build($params);
@@ -44,10 +51,14 @@ class BaseService
         }
 
         $request = $this->client->createRequest($method, $fullPath, $headers, $body);
+        $logger->log('debug', 'PayPal SEND path ' . $path);
+        $logger->log('debug', 'PayPal SEND request ' . $request->getBody());
+        $logger->log('debug', 'PayPal SEND headers ' . serialize($request->getHeaders()));
         try {
             $response = $this->client->send($request);
-        } catch (GuzzleException $e) {
-            throw new ApiException($e);
+        } catch (GuzzleException $exception) {
+            $logger->log('error', $exception->getMessage(), [$exception]);
+            throw new ApiException($exception);
         }
         return $response;
     }
