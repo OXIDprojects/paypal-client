@@ -9,7 +9,7 @@ use OxidSolutionCatalysts\PayPalApi\Model\Catalog\ProductRequestPOST;
 
 class Catalog extends BaseService
 {
-    protected $basePath = '/v1/catalogs';
+    protected string $basePath = '/v1/catalogs';
 
     /**
      * Creates a product.

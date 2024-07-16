@@ -21,7 +21,7 @@ use OxidSolutionCatalysts\PayPalApi\Model\Subscriptions\UpdatePricingSchemesList
 
 class Subscriptions extends BaseService
 {
-    protected $basePath = '/v1/billing';
+    protected string $basePath = '/v1/billing';
 
     /**
      * Creates a plan that defines pricing and billing cycle details for subscriptions.

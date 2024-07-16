@@ -9,7 +9,7 @@ use OxidSolutionCatalysts\PayPalApi\Model\Partner\ReferralDataReferralDataRespon
 
 class Partner extends BaseService
 {
-    protected $basePath = '/v2/customer';
+    protected string $basePath = '/v2/customer';
 
     /**
      * Creates a partner referral that is shared by the API caller. The referrals contains the client's personal,

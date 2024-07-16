@@ -15,7 +15,7 @@ use OxidSolutionCatalysts\PayPalApi\Model\Payments\RefundRequest;
 
 class Payments extends BaseService
 {
-    protected $basePath = '/v2/payments';
+    protected string $basePath = '/v2/payments';
 
     /**
      * Authorizes partial or full amount of a saved order payment, by order ID. Authorize partial or full amount of a
