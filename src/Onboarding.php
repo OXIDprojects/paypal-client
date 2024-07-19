@@ -48,7 +48,16 @@ class Onboarding extends Client
     ) {
         $this->partnerId = $oxidPartnerId;
         $this->sellerId = $sellerId;
-        parent::__construct($logger, $endpoint, $oxidClientId, $oxidClientSecret, $tokenCacheFilename, '', $debug);
+        parent::__construct(
+            $logger,
+            $endpoint,
+            $oxidClientId,
+            $oxidClientSecret,
+            $tokenCacheFilename,
+            '',
+            '',
+            $debug
+        );
     }
 
     /**
