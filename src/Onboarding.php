@@ -34,6 +34,7 @@ class Onboarding extends Client
      * @param string $oxidPartnerId for getting credentials and information for successful onboarding
      * @param string $sellerId for getting information for successful onboarding
      * @param string $tokenCacheFilename the filename for the cached token
+     * @param string $actionHash - An hash to help generate a unique PayPal-Request-Id
      * @param bool $debug  set to true to debug request sent to PayPal on the console
      */
     public function __construct(
@@ -44,6 +45,7 @@ class Onboarding extends Client
                         $oxidPartnerId,
                         $sellerId,
                         $tokenCacheFilename,
+                        $actionHash,
                         $debug = false
     ) {
         $this->partnerId = $oxidPartnerId;
@@ -54,7 +56,7 @@ class Onboarding extends Client
             $oxidClientId,
             $oxidClientSecret,
             $tokenCacheFilename,
-            '',
+            $actionHash,
             '',
             $debug
         );
@@ -133,6 +135,9 @@ class Onboarding extends Client
         return $result;
     }
 
+    /**
+     * @throws ApiException
+     */
     public function getMerchantInformations(): array
     {
         $partnerId = $this->partnerId;
