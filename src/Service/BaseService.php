@@ -14,8 +14,9 @@ class BaseService
 {
     use ServiceContainer;
 
-    /** @var Client */
-    public $client;
+    public Client $client;
+
+    protected string $basePath = '';
 
     /**
      * @param $client Client
@@ -46,9 +47,7 @@ class BaseService
         }
         $fullPath = $this->basePath . $path;
 
-        if ($body) {
-            $headers['PayPal-Request-Id'] = md5(serialize($body));
-        }
+        $headers['PayPal-Request-Id'] = md5($path . serialize($body) . $this->client->getActionHash());
 
         $request = $this->client->createRequest($method, $fullPath, $headers, $body);
 

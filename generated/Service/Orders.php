@@ -16,7 +16,7 @@ use OxidSolutionCatalysts\PayPalApi\Model\Orders\PaymentSessionResponse;
 
 class Orders extends BaseService
 {
-    protected $basePath = '/v2/checkout';
+    protected string $basePath = '/v2/checkout';
 
     /**
      * Creates an order.<blockquote><strong>Note:</strong> For error handling and troubleshooting, see <a

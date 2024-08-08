@@ -4,33 +4,39 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
-## [2.0.14] -2024-04-26
+## [2.0.15] - 2024-08-08
+
+### FIX
+
+- introduce ActionHash to make the PayPal-Request-ID more unique
+
+## [2.0.14] - 2024-04-26
 
 - introduce GooglePay-Classes
 
-## [2.0.13] -2024-04-09
+## [2.0.13] - 2024-04-09
 
 - PayPal-Request-Id based on serialized body, no extra PayPal-Request-Id necessary anymore
 
-## [2.0.12] -2024-03-19
+## [2.0.12] - 2024-03-19
 
 - introduce central log functionality
 
-## [2.0.11] -2024-03-15
+## [2.0.11] - 2024-03-15
 
 - remove 500-redirect if some API Calls not work correctly
 - introduce PayPal-Request-Id for api-calls
 
-## [2.0.10] -2024-01-26
+## [2.0.10] - 2024-01-26
 
 - add Vaulting to API-Calls
 - add Debug-Logging for send-Requests
 
-## [2.0.9] -2023-11-17
+## [2.0.9] - 2023-11-17
 
 - add PartnerAttributionId to API-Calls
 
-## [2.0.8] -2023-09-08
+## [2.0.8] - 2023-09-08
 
 - Avoid PHP warning on non existing cache file
 
