@@ -66,19 +66,24 @@ class Orders extends BaseService
      * @param $fields string A comma-separated list of fields that should be returned for the order. Valid filter
      * field is `payment_source`.
      *
-     * @throws ApiException
+     * @param $payPalPartnerAttributionId string
+     *
      * @return Order
+     *@throws ApiException
      */
-    public function showOrderDetails($id, $fields): Order
+    public function showOrderDetails($id, $fields, $payPalPartnerAttributionId): Order
     {
         $path = "/orders/{$id}";
 
+        $headers = [];
+        $headers['Content-Type'] = 'application/json';
+        $headers['PayPal-Partner-Attribution-Id'] = $payPalPartnerAttributionId;
 
         $params = [];
         $params['fields'] = $fields;
 
         $body = null;
-        $response = $this->send('GET', $path, $params, [], $body);
+        $response = $this->send('GET', $path, $params, $headers, $body);
         $jsonData = json_decode($response->getBody(), true);
         return new Order($jsonData);
     }
