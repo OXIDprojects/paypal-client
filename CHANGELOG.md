@@ -10,6 +10,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 - introduce ActionHash to make the PayPal-Request-ID more unique
 - add possibility to ignore cached tokens. It helps e.g. for webhook registration
+- BIC field removed from iDeal Payment method
 
 ## [3.0.11] -2024-05-14
 
