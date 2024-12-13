@@ -62,6 +62,10 @@ class Client
     /**
      * @var string
      */
+    private $actionHash;
+    /**
+     * @var string
+     */
     private $tokenCacheFilename;
 
     /**
@@ -74,6 +78,7 @@ class Client
      * seller/merchant or partner clientSecret depending on if it is a first party or a third party
      * request. Usually you want to use the sellers credentials if they are available
      * @param string $tokenCacheFilename the filename for the cached token
+     * @param string $actionHash - An hash to help generate a unique PayPal-Request-Id
      * @param string $payerId the technical oxid paypal account client id used as meta information in requests
      * @param bool $debug
      */
@@ -83,6 +88,7 @@ class Client
                         $clientId,
                         $clientSecret,
                         $tokenCacheFilename,
+                        $actionHash = "",
                         $payerId = "",
                         $debug = false
     ) {
@@ -91,6 +97,7 @@ class Client
         $this->merchantClientSecret = $clientSecret;
         $this->merchantPayerId = $payerId;
         $this->tokenCacheFilename = $tokenCacheFilename;
+        $this->actionHash = $actionHash;
         $stack = HandlerStack::create();
         if ($debug) {
             $stack->push(
@@ -128,7 +135,7 @@ class Client
         try {
             $method = $request->getMethod();
             assert(
-                (array_search($method, ['POST','PATCH','PUT','GET','DELETE']) !== false),
+                (in_array($method, ['POST','PATCH','PUT','GET','DELETE'])),
                 "not valid http method '$method' for paypal client"
             );
 
@@ -138,16 +145,14 @@ class Client
                 //clear tokens to force re-auth
                 $this->setTokenResponse(null);
                 return $this->sendWithAuth($request);
-            } else {
-                throw $e;
             }
+            throw $e;
         }
     }
 
     public function request($method, $uri = '', $options = [])
     {
-        $res = $this->httpClient->request($method, $this->endpoint . $uri, $options);
-        return $res;
+        return $this->httpClient->request($method, $this->endpoint . $uri, $options);
     }
 
     /**
@@ -195,7 +200,9 @@ class Client
      */
     public function setTokenResponse($tokenResponse)
     {
-        file_put_contents($this->tokenCacheFilename, $tokenResponse);
+        if ($this->tokenCacheFilename) {
+            file_put_contents($this->tokenCacheFilename, $tokenResponse);
+        }
         $this->tokenResponse = $tokenResponse;
     }
 
@@ -206,7 +213,10 @@ class Client
      */
     public function getTokenResponse()
     {
-        if (is_null($this->tokenResponse) && file_exists($this->tokenCacheFilename)) {
+        if (is_null($this->tokenResponse) &&
+            $this->tokenCacheFilename &&
+            file_exists($this->tokenCacheFilename)
+        ) {
             $tokenResponse = file_get_contents($this->tokenCacheFilename);
             if ($tokenResponse) {
                 $this->tokenResponse = $tokenResponse;
@@ -216,8 +226,8 @@ class Client
     }
 
     /**
-     * @param RequestInterface $request
      * @return RequestInterface
+     * @throws GuzzleException
      */
     protected function injectAuthHeaders(RequestInterface $request)
     {
@@ -252,8 +262,7 @@ class Client
     protected function sendWithAuth(RequestInterface $request)
     {
         $request = $this->injectAuthHeaders($request);
-        $res = $this->httpClient->send($request);
-        return $res;
+        return $this->httpClient->send($request);
     }
 
 
@@ -279,5 +288,12 @@ class Client
     public function getEndpoint(): string
     {
         return $this->endpoint;
+    }
+    /**
+     * @return string
+     */
+    public function getActionHash(): string
+    {
+        return $this->actionHash;
     }
 }
