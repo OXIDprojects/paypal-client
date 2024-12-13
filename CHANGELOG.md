@@ -4,6 +4,24 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## [1.0.12] - 2024-12-12
+
+### FIX
+
+- add possibility to ignore cached tokens. It helps e.g. for webhook registration
+- introduce ActionHash to make the PayPal-Request-ID more unique
+
+## [1.0.11] - 2024-09-09
+
+### FIX
+
+- Provide BN-Codes in showOrderDetails
+
+## [1.0.10] - 2023-11-21
+
+### FIX
+
+- PHP-Error in File
 
 ## [1.0.9] -2023-11-17
 
