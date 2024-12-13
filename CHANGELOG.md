@@ -4,9 +4,10 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
-## [2.0.17] - 2024-12-05
+## [2.0.17] - 2024-12-13
 
 - BIC field removed from iDeal Payment method
+- add possibility to ignore cached tokens. It helps e.g. for webhook registration
 
 ## [2.0.16] - 2024-09-05
 
