@@ -9,6 +9,7 @@ use GuzzleHttp\HandlerStack;
 use GuzzleHttp\MessageFormatter;
 use GuzzleHttp\Middleware;
 use GuzzleHttp\Psr7\Request;
+use JsonException;
 use Psr\Http\Message\RequestInterface;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\StreamInterface;
@@ -162,6 +163,8 @@ class Client
      * see Client::setTokenResponse()
      * this call will be done implicitly if a request is sent and the client is not yet authenticated
      * @return $this
+     * @throws GuzzleException
+     * @throws JsonException
      */
     public function auth()
     {
@@ -201,7 +204,9 @@ class Client
      */
     public function setTokenResponse($tokenResponse)
     {
-        file_put_contents($this->tokenCacheFilename, $tokenResponse);
+        if ($this->tokenCacheFilename) {
+            file_put_contents($this->tokenCacheFilename, $tokenResponse);
+        }
         $this->tokenResponse = $tokenResponse;
     }
 
@@ -212,7 +217,10 @@ class Client
      */
     public function getTokenResponse()
     {
-        if (is_null($this->tokenResponse) && file_exists($this->tokenCacheFilename)) {
+        if (is_null($this->tokenResponse) &&
+            $this->tokenCacheFilename &&
+            file_exists($this->tokenCacheFilename)
+        ) {
             $tokenResponse = file_get_contents($this->tokenCacheFilename);
             if ($tokenResponse) {
                 $this->tokenResponse = $tokenResponse;
@@ -224,6 +232,8 @@ class Client
     /**
      * @param RequestInterface $request
      * @return RequestInterface
+     * @throws GuzzleException
+     * @throws JsonException
      */
     protected function injectAuthHeaders(RequestInterface $request)
     {
