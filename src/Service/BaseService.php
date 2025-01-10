@@ -14,8 +14,9 @@ class BaseService
 {
     use ServiceContainer;
 
-    /** @var Client */
-    public $client;
+    public Client $client;
+
+    protected string $basePath = '';
 
     /**
      * @param $client Client
@@ -46,14 +47,14 @@ class BaseService
         }
         $fullPath = $this->basePath . $path;
 
-        if ($body) {
-            $headers['PayPal-Request-Id'] = md5($path . serialize($body) . $this->client->getActionHash());
-        }
+        $headers['PayPal-Request-Id'] = md5($path . serialize($body) . $this->client->getActionHash());
 
         $request = $this->client->createRequest($method, $fullPath, $headers, $body);
+
         $logger->log('debug', 'PayPal SEND path ' . $path);
         $logger->log('debug', 'PayPal SEND request ' . $request->getBody());
         $logger->log('debug', 'PayPal SEND headers ' . serialize($request->getHeaders()));
+
         try {
             $response = $this->client->send($request);
         } catch (GuzzleException $exception) {

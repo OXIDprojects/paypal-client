@@ -4,6 +4,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## [3.0.13] - 2024-12-19
+
+### FIX
+
+- Take over all Features from OXID6.3 Branch
+
 ## [3.0.12] - 2024-12-12
 
 ### FIX

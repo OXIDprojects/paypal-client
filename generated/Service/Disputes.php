@@ -40,7 +40,7 @@ use OxidSolutionCatalysts\PayPalApi\Model\Disputes\ResponseSuggestionResponse;
 
 class Disputes extends BaseService
 {
-    protected $basePath = '/v1/customer';
+    protected string $basePath = '/v1/customer';
 
     /**
      * Send a dispute event notification. The event format should conform to the CloudEvents specification.Currently
