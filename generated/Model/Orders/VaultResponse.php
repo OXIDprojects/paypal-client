@@ -42,6 +42,10 @@ class VaultResponse implements JsonSerializable
      */
     public $status;
 
+    public $customer;
+
+    public $links;
+
     public function validate($from = null)
     {
         $within = isset($from) ? "within $from" : "";
@@ -74,6 +78,15 @@ class VaultResponse implements JsonSerializable
         }
         if (isset($data['status'])) {
             $this->status = $data['status'];
+        }
+        if (isset($data['customer'])) {
+            $this->customer = $data['customer'];
+        }
+        if (isset($data['links'])) {
+            $this->links = [];
+            foreach ($data['links'] as $item) {
+                $this->links[] = $item;
+            }
         }
     }
 

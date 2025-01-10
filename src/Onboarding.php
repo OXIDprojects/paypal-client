@@ -34,6 +34,7 @@ class Onboarding extends Client
      * @param string $oxidPartnerId for getting credentials and information for successful onboarding
      * @param string $sellerId for getting information for successful onboarding
      * @param string $tokenCacheFilename the filename for the cached token
+     * @param string $actionHash - An hash to help generate a unique PayPal-Request-Id
      * @param bool $debug  set to true to debug request sent to PayPal on the console
      */
     public function __construct(
@@ -44,11 +45,21 @@ class Onboarding extends Client
                         $oxidPartnerId,
                         $sellerId,
                         $tokenCacheFilename,
+                        $actionHash,
                         $debug = false
     ) {
         $this->partnerId = $oxidPartnerId;
         $this->sellerId = $sellerId;
-        parent::__construct($logger, $endpoint, $oxidClientId, $oxidClientSecret, $tokenCacheFilename, '', $debug);
+        parent::__construct(
+            $logger,
+            $endpoint,
+            $oxidClientId,
+            $oxidClientSecret,
+            $tokenCacheFilename,
+            $actionHash,
+            '',
+            $debug
+        );
     }
 
     /**
@@ -64,7 +75,7 @@ class Onboarding extends Client
      * @param $sellerNonce string the random number that was used to generate the paypal register/login link
      * @throws ApiException
      */
-    public function authAfterWebLogin($authCode, $sharedId, $sellerNonce)
+    public function authAfterWebLogin(string $authCode, string $sharedId, string $sellerNonce): void
     {
         //fixme: test this by using register link and callback see 2.1.3.1 in paypal sdd 1.0
         $authBase64 = base64_encode("$sharedId:");
@@ -74,25 +85,27 @@ class Onboarding extends Client
             "Authorization" => "Basic $authBase64",
             "Accept" => self::CONTENT_TYPE_JSON
         ];
-    try {
-        $res = $client->post($url, [
-            "headers"     => $headers,
-            'form_params' => [
-                "grant_type"    => "authorization_code",
-                "code"          => $authCode,
-                "code_verifier" => $sellerNonce,
-            ]
-        ]);
 
-        $rawTokenResponse = json_decode('' . $res->getBody(), true);
-    } catch (GuzzleException $exception) {
-        /** @var Logger $logger */
-        $logger = $this->getServiceFromContainer(Logger::class);
-        $logger->log('error', $exception->getMessage(), [$exception]);
-        throw new ApiException($exception);
-    } catch (JsonException $e) {
-        $rawTokenResponse = [];
-    }
+        try {
+            $res = $client->post($url, [
+                "headers" => $headers,
+                'form_params' => [
+                    "grant_type" => "authorization_code",
+                    "code" => $authCode,
+                    "code_verifier" => $sellerNonce,
+                ]
+            ]);
+            $rawTokenResponse = (array)json_decode('' . $res->getBody(), true, 512, JSON_THROW_ON_ERROR);
+
+        } catch (GuzzleException $exception) {
+            /** @var Logger $logger */
+            $logger = $this->getServiceFromContainer(Logger::class);
+            $logger->log('error', $exception->getMessage(), [$exception]);
+            throw new ApiException($exception);
+        } catch (JsonException $e) {
+            $rawTokenResponse = [];
+        }
+
         $this->setTokenResponse($rawTokenResponse['access_token'] ?: '');
     }
 
@@ -107,9 +120,10 @@ class Onboarding extends Client
             "/v1/customer/partners/{$partnerId}/merchant-integrations/credentials",
             []
         );
+
         try {
             $response = $this->send($request);
-            $result =  json_decode($response->getBody(), true);
+            $result = (array) json_decode($response->getBody(), true, 512, JSON_THROW_ON_ERROR);
         } catch (GuzzleException $exception) {
             /** @var Logger $logger */
             $logger = $this->getServiceFromContainer(Logger::class);
@@ -121,7 +135,10 @@ class Onboarding extends Client
         return $result;
     }
 
-    public function getMerchantInformations()
+    /**
+     * @throws ApiException
+     */
+    public function getMerchantInformations(): array
     {
         $partnerId = $this->partnerId;
         $sellerId = $this->sellerId;
@@ -133,8 +150,8 @@ class Onboarding extends Client
 
         try {
             $response = $this->send($request);
-            $result = json_decode($response->getBody(), true);
-        } catch(GuzzleException $exception) {
+            $result = (array) json_decode($response->getBody(), true, 512, JSON_THROW_ON_ERROR);
+        } catch (GuzzleException $exception) {
             /** @var Logger $logger */
             $logger = $this->getServiceFromContainer(Logger::class);
             $logger->log('error', $exception->getMessage(), [$exception]);
@@ -142,7 +159,6 @@ class Onboarding extends Client
         } catch (JsonException $e) {
             $result = [];
         }
-
         return $result;
     }
 }

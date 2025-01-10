@@ -9,7 +9,7 @@ use OxidSolutionCatalysts\PayPalApi\Model\TransactionSearch\SearchResponse;
 
 class TransactionSearch extends BaseService
 {
-    protected $basePath = '/v1/reporting';
+    protected string $basePath = '/v1/reporting';
 
     /**
      * Lists transactions. Specify one or more query parameters to filter the transaction that appear in the

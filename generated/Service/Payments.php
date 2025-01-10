@@ -15,7 +15,7 @@ use OxidSolutionCatalysts\PayPalApi\Model\Payments\RefundRequest;
 
 class Payments extends BaseService
 {
-    protected $basePath = '/v2/payments';
+    protected string $basePath = '/v2/payments';
 
     /**
      * Authorizes partial or full amount of a saved order payment, by order ID. Authorize partial or full amount of a
@@ -92,7 +92,7 @@ class Payments extends BaseService
      * @throws ApiException
      * @return Capture
      */
-    public function captureAuthorizedPayment($authorizationId, CaptureRequest $capture, string $payPalPartnerAttributionId = '', $prefer = 'return=minimal'): Capture
+    public function captureAuthorizedPayment($authorizationId, CaptureRequest $capture, string $payPalPartnerAttributionId = '',$prefer = 'return=minimal'): Capture
     {
         $path = "/authorizations/{$authorizationId}/capture";
 
