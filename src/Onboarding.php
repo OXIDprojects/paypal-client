@@ -4,14 +4,11 @@ namespace OxidSolutionCatalysts\PayPalApi;
 
 use GuzzleHttp\Exception\GuzzleException;
 use JsonException;
-use OxidSolutionCatalysts\PayPal\Service\Logger;
-use OxidSolutionCatalysts\PayPal\Traits\ServiceContainer;
 use OxidSolutionCatalysts\PayPalApi\Exception\ApiException;
 use Psr\Log\LoggerInterface;
 
 class Onboarding extends Client
 {
-    use ServiceContainer;
 
     /**
      * @var string
@@ -22,6 +19,11 @@ class Onboarding extends Client
      * @var string
      */
     private $sellerId;
+
+    /**
+     * @var LoggerInterface
+     */
+    protected $logger;
 
     /**
      * during onboarding you do not have shop owners credentials
@@ -50,6 +52,7 @@ class Onboarding extends Client
     ) {
         $this->partnerId = $oxidPartnerId;
         $this->sellerId = $sellerId;
+        $this->logger = $logger;
         parent::__construct(
             $logger,
             $endpoint,
@@ -98,9 +101,7 @@ class Onboarding extends Client
             $rawTokenResponse = (array)json_decode('' . $res->getBody(), true, 512, JSON_THROW_ON_ERROR);
 
         } catch (GuzzleException $exception) {
-            /** @var Logger $logger */
-            $logger = $this->getServiceFromContainer(Logger::class);
-            $logger->log('error', $exception->getMessage(), [$exception]);
+            $this->logger->log('error', $exception->getMessage(), [$exception]);
             throw new ApiException($exception);
         } catch (JsonException $e) {
             $rawTokenResponse = [];
@@ -125,9 +126,7 @@ class Onboarding extends Client
             $response = $this->send($request);
             $result = (array) json_decode($response->getBody(), true, 512, JSON_THROW_ON_ERROR);
         } catch (GuzzleException $exception) {
-            /** @var Logger $logger */
-            $logger = $this->getServiceFromContainer(Logger::class);
-            $logger->log('error', $exception->getMessage(), [$exception]);
+            $this->logger->log('error', $exception->getMessage(), [$exception]);
             throw new ApiException($exception);
         } catch (JsonException $e) {
             $result = [];
@@ -152,9 +151,7 @@ class Onboarding extends Client
             $response = $this->send($request);
             $result = (array) json_decode($response->getBody(), true, 512, JSON_THROW_ON_ERROR);
         } catch (GuzzleException $exception) {
-            /** @var Logger $logger */
-            $logger = $this->getServiceFromContainer(Logger::class);
-            $logger->log('error', $exception->getMessage(), [$exception]);
+            $this->logger->log('error', $exception->getMessage(), [$exception]);
             throw new ApiException($exception);
         } catch (JsonException $e) {
             $result = [];
