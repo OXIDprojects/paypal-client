@@ -28,6 +28,7 @@ class Onboarding extends Client
      * @param string $sellerId for getting information for successful onboarding
      * @param string $tokenCacheFilename the filename for the cached token
      * @param bool $debug  set to true to debug request sent to PayPal on the console
+     * @param string $actionHash - An hash to help generate a unique PayPal-Request-Id
      */
     public function __construct(
         LoggerInterface $logger,
@@ -37,11 +38,12 @@ class Onboarding extends Client
                         $oxidPartnerId,
                         $sellerId,
                         $tokenCacheFilename,
+                        $actionHash,
                         $debug = false
     ) {
         $this->partnerId = $oxidPartnerId;
         $this->sellerId = $sellerId;
-        parent::__construct($logger, $endpoint, $oxidClientId, $oxidClientSecret, $tokenCacheFilename, '', $debug);
+        parent::__construct($logger, $endpoint, $oxidClientId, $oxidClientSecret, $tokenCacheFilename, $actionHash, '', $debug);
     }
 
     /**
