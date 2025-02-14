@@ -271,6 +271,13 @@ class Client
         return $this->httpClient->send($request);
     }
 
+    /**
+     * provide the Logger for Services that use the Client
+     */
+    public function getLogger(): LoggerInterface
+    {
+        return $this->logger;
+    }
 
     /**
      * @return string
