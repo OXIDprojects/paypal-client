@@ -10,12 +10,9 @@ use GuzzleHttp\Psr7\Query;
 
 class BaseService
 {
+    public Client $client;
 
-    /** @var Client */
-    public $client;
-
-    /** @var string */
-    protected $basePath = '';
+    protected string $basePath = '';
 
     /**
      * @param $client Client

@@ -104,6 +104,7 @@ class Client
                         $payerId = "",
                         $debug = false
     ) {
+        $this->logger = $logger;
         $this->endpoint = $endpoint;
         $this->merchantClientId = $clientId;
         $this->merchantClientSecret = $clientSecret;
