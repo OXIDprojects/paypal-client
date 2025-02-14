@@ -31,6 +31,16 @@ class Client
     public const CONTENT_TYPE_X_WWW     = 'application/x-www-form-urlencoded';
 
     /**
+     * Maximum number of seconds to wait for server response
+     */
+    private const REQUEST_TIMEOUT = 30;
+
+    /**
+     * Maximum number of seconds to wait while trying to connect to server
+     */
+    private const CONNECT_TIMEOUT = 5;
+
+    /**
      * @var string
      */
     protected $endpoint;
@@ -108,8 +118,10 @@ class Client
         }
         $this->httpClient = new \GuzzleHttp\Client(
             [
-                'handler' => $stack,
-                'debug' => $debug
+                'handler'         => $stack,
+                'debug'           => $debug,
+                'timeout'         => self::REQUEST_TIMEOUT,
+                'connect_timeout' => self::CONNECT_TIMEOUT
             ]
         );
     }
