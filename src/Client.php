@@ -30,6 +30,16 @@ class Client
     const CONTENT_TYPE_X_WWW     = 'application/x-www-form-urlencoded';
 
     /**
+     * Maximum number of seconds to wait for server response
+     */
+    const REQUEST_TIMEOUT = 30;
+
+    /**
+     * Maximum number of seconds to wait while trying to connect to server
+     */
+    const CONNECT_TIMEOUT = 5;
+
+    /**
      * @var string
      */
     protected $endpoint;
@@ -69,6 +79,10 @@ class Client
     private $tokenCacheFilename;
 
     /**
+     * @var LoggerInterface
+     */
+    protected $logger;
+    /**
      * Client constructor.
      * @param LoggerInterface $logger
      * @param string $endpoint
@@ -92,6 +106,7 @@ class Client
                         $payerId = "",
                         $debug = false
     ) {
+        $this->logger = $logger;
         $this->endpoint = $endpoint;
         $this->merchantClientId = $clientId;
         $this->merchantClientSecret = $clientSecret;
@@ -106,8 +121,10 @@ class Client
         }
         $this->httpClient = new \GuzzleHttp\Client(
             [
-                'handler' => $stack,
-                'debug' => $debug
+                'handler'         => $stack,
+                'debug'           => $debug,
+                'timeout'         => self::REQUEST_TIMEOUT,
+                'connect_timeout' => self::CONNECT_TIMEOUT
             ]
         );
     }
@@ -265,6 +282,13 @@ class Client
         return $this->httpClient->send($request);
     }
 
+    /**
+     * provide the Logger for Services that use the Client
+     */
+    public function getLogger(): LoggerInterface
+    {
+        return $this->logger;
+    }
 
     /**
      * @return string
