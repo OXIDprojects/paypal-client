@@ -35,8 +35,6 @@ class BaseService
      */
     protected function send($method, $path, $params = [], $headers = [], $body = null): ResponseInterface
     {
-        $logger = $this->client->getLogger();
-
         $params = array_filter($params);
         if ($params) {
             $q = Query::build($params);
@@ -47,10 +45,6 @@ class BaseService
         $headers['PayPal-Request-Id'] = md5($path . serialize($body) . $this->client->getActionHash());
 
         $request = $this->client->createRequest($method, $fullPath, $headers, $body);
-
-        $logger->log('debug', 'PayPal SEND path ' . $path);
-        $logger->log('debug', 'PayPal SEND request ' . $request->getBody());
-        $logger->log('debug', 'PayPal SEND headers ' . serialize($request->getHeaders()));
 
         try {
             $response = $this->client->send($request);

@@ -79,10 +79,6 @@ class Client
     private $tokenCacheFilename;
 
     /**
-     * @var LoggerInterface
-     */
-    protected $logger;
-    /**
      * Client constructor.
      * @param LoggerInterface $logger
      * @param string $endpoint
@@ -106,7 +102,6 @@ class Client
                         $payerId = "",
                         $debug = false
     ) {
-        $this->logger = $logger;
         $this->endpoint = $endpoint;
         $this->merchantClientId = $clientId;
         $this->merchantClientSecret = $clientSecret;
@@ -280,14 +275,6 @@ class Client
     {
         $request = $this->injectAuthHeaders($request);
         return $this->httpClient->send($request);
-    }
-
-    /**
-     * provide the Logger for Services that use the Client
-     */
-    public function getLogger(): LoggerInterface
-    {
-        return $this->logger;
     }
 
     /**
