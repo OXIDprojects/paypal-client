@@ -81,6 +81,11 @@ class Client
     private $tokenCacheFilename;
 
     /**
+     * @var LoggerInterface
+     */
+    protected $logger;
+
+    /**
      * Client constructor.
      * @param LoggerInterface $logger
      * @param string $endpoint
