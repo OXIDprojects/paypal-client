@@ -4,6 +4,15 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## [1.0.14] - 2025-02-18
+
+- use ActionHash in Client
+- add request and connect timeout
+
+## [1.0.13] - 2025-02-13
+
+- provide ActionHash in onBoarding-Client
+
 ## [1.0.12] - 2024-12-12
 
 ### FIX
