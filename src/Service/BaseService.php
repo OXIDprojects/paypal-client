@@ -3,8 +3,6 @@
 namespace OxidSolutionCatalysts\PayPalApi\Service;
 
 use GuzzleHttp\Exception\GuzzleException;
-use OxidSolutionCatalysts\PayPal\Service\Logger;
-use OxidSolutionCatalysts\PayPal\Traits\ServiceContainer;
 use OxidSolutionCatalysts\PayPalApi\Client;
 use OxidSolutionCatalysts\PayPalApi\Exception\ApiException;
 use Psr\Http\Message\ResponseInterface;
@@ -12,8 +10,6 @@ use GuzzleHttp\Psr7\Query;
 
 class BaseService
 {
-    use ServiceContainer;
-
     public Client $client;
 
     protected string $basePath = '';
@@ -37,8 +33,7 @@ class BaseService
      */
     protected function send($method, $path, $params = [], $headers = [], $body = null): ResponseInterface
     {
-        /** @var Logger $logger */
-        $logger = $this->getServiceFromContainer(Logger::class);
+        $logger = $this->client->getLogger();
 
         $params = array_filter($params);
         if ($params) {

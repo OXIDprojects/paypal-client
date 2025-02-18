@@ -4,6 +4,11 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## [3.0.15] - 2025-02-18
+
+- use Logger via LoggerInterface instead from PayPal-Module
+- add request and connect timeout
+
 ## [3.0.14] - 2025-02-04
 
 - use Logger via LoggerInterface instead from PayPal-Module
